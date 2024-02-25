@@ -1,24 +1,27 @@
-package edu.java.bot.Controllers;
+package edu.java.bot.controllers;
 
 import com.pengrad.telegrambot.TelegramBot;
 import com.pengrad.telegrambot.UpdatesListener;
-import edu.java.bot.Services.MessageProcessor;
+import edu.java.bot.services.MessageProcessor;
+import jakarta.annotation.PostConstruct;
+import lombok.Getter;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Controller;
 
 @Controller
 @Slf4j
-public class BotRunner {
+@Getter
+public class BotController {
 
     private final TelegramBot bot;
     private final MessageProcessor messageProcessor;
 
-    public BotRunner(TelegramBot bot, MessageProcessor messageProcessor) {
+    public BotController(TelegramBot bot, MessageProcessor messageProcessor) {
         this.bot = bot;
         this.messageProcessor = messageProcessor;
-        this.run();
     }
 
+    @PostConstruct
     private void run() {
         log.info("Bot has started working");
 

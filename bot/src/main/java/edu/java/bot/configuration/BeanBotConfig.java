@@ -1,4 +1,4 @@
-package edu.java.bot.Configuration;
+package edu.java.bot.configuration;
 
 import com.pengrad.telegrambot.TelegramBot;
 import lombok.extern.slf4j.Slf4j;

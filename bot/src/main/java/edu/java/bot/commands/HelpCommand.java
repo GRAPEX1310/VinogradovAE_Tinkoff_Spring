@@ -1,4 +1,4 @@
-package edu.java.bot.Commands;
+package edu.java.bot.commands;
 
 import com.pengrad.telegrambot.model.Update;
 import com.pengrad.telegrambot.request.SendMessage;
@@ -31,6 +31,7 @@ public class HelpCommand implements BotCommand {
             /track - начать отслеживание обновлений ресурса
             /untrack - прекратить отслеживание обновлений ресурса
             /list - список отслеживаемых ресурсов
+            /cancel - отменить ввод ссылки
             """;
     }
 }
