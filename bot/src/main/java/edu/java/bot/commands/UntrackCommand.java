@@ -2,9 +2,9 @@ package edu.java.bot.commands;
 
 import com.pengrad.telegrambot.model.Update;
 import com.pengrad.telegrambot.request.SendMessage;
-import edu.java.bot.database.LinkRepository;
-import edu.java.bot.database.User;
-import edu.java.bot.database.UserState;
+import edu.java.bot.database.UsersLinkRepository;
+import edu.java.bot.database.User.User;
+import edu.java.bot.database.User.UserState;
 import edu.java.bot.utils.LinkValidator;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
@@ -22,10 +22,10 @@ public class UntrackCommand implements BotCommand {
         "Данный ресурс уже удален или не был добавлен";
 
     @Autowired
-    private final LinkRepository repository;
+    private final UsersLinkRepository repository;
     private User currentUser;
 
-    public UntrackCommand(LinkRepository repository) {
+    public UntrackCommand(UsersLinkRepository repository) {
         this.repository = repository;
     }
 
@@ -51,14 +51,10 @@ public class UntrackCommand implements BotCommand {
             if (LinkValidator.isLinkValid(update.message().text())) {
                 boolean result = repository.deleteLink(currentUser, update.message().text());
                 if (!result) {
-//                    return new SendMessage(
-//                        update.message().chat().id(),
-//                        "Данный ресурс уже удален или не был добавлен"
-//                    );
                     response = RESOURCE_HAS_ALREADY_BEEN_DELETED_RESPONSE;
                 } else {
                     currentUser.setState(UserState.BASE);
-                    //return new SendMessage(update.message().chat().id(), this.message());
+                    response = RESOURCE_WAS_DELETED_RESPONSE;
                 }
             } else {
                 return new SendMessage(update.message().chat().id(), INCORRECT_RESOURCE_RESPONSE);

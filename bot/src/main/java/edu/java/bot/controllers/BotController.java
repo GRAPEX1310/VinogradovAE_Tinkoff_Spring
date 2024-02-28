@@ -24,7 +24,7 @@ public class BotController {
     @PostConstruct
     private void run() {
         log.info("Bot has started working");
-
+        messageProcessor.start();
         bot.setUpdatesListener(list -> {
             list.forEach(update -> messageProcessor.checkUpdate(update, bot));
 

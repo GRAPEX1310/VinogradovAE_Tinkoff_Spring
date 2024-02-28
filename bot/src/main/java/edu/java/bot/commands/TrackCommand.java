@@ -2,9 +2,9 @@ package edu.java.bot.commands;
 
 import com.pengrad.telegrambot.model.Update;
 import com.pengrad.telegrambot.request.SendMessage;
-import edu.java.bot.database.LinkRepository;
-import edu.java.bot.database.User;
-import edu.java.bot.database.UserState;
+import edu.java.bot.database.UsersLinkRepository;
+import edu.java.bot.database.User.User;
+import edu.java.bot.database.User.UserState;
 import edu.java.bot.utils.LinkValidator;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
@@ -20,10 +20,10 @@ public class TrackCommand implements BotCommand {
     private static final String RESOURCE_HAS_ALREADY_BEEN_REGISTERED_RESPONSE = "Данный ресурс уже зарегистрирован";
 
     @Autowired
-    private final LinkRepository repository;
+    private final UsersLinkRepository repository;
     private User currentUser;
 
-    public TrackCommand(LinkRepository repository) {
+    public TrackCommand(UsersLinkRepository repository) {
         this.repository = repository;
     }
 

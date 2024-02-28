@@ -1,4 +1,4 @@
-package edu.java.bot.database;
+package edu.java.bot.database.User;
 
 import lombok.Getter;
 import lombok.Setter;

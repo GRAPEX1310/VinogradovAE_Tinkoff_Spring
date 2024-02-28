@@ -2,9 +2,9 @@ package edu.java.bot.commands;
 
 import com.pengrad.telegrambot.model.Update;
 import com.pengrad.telegrambot.request.SendMessage;
-import edu.java.bot.database.LinkRepository;
-import edu.java.bot.database.User;
-import edu.java.bot.database.UserState;
+import edu.java.bot.database.UsersLinkRepository;
+import edu.java.bot.database.User.User;
+import edu.java.bot.database.User.UserState;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -12,10 +12,10 @@ import org.springframework.stereotype.Component;
 public class CancelCommand implements BotCommand {
 
     @Autowired
-    private final LinkRepository repository;
+    private final UsersLinkRepository repository;
     private User currentUser;
 
-    public CancelCommand(LinkRepository repository) {
+    public CancelCommand(UsersLinkRepository repository) {
         this.repository = repository;
     }
 

@@ -2,8 +2,8 @@ package edu.java.bot.commands;
 
 import com.pengrad.telegrambot.model.Update;
 import com.pengrad.telegrambot.request.SendMessage;
-import edu.java.bot.database.LinkRepository;
-import edu.java.bot.database.User;
+import edu.java.bot.database.UsersLinkRepository;
+import edu.java.bot.database.User.User;
 import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
@@ -16,10 +16,10 @@ public class ListCommand implements BotCommand {
     private static final String EMPTY_LINKS_LIST_RESPONSE = "Здесь появятся ссылки на все отслеживаемые ресурсы";
 
     @Autowired
-    private final LinkRepository repository;
+    private final UsersLinkRepository repository;
     private String links;
 
-    public ListCommand(LinkRepository repository) {
+    public ListCommand(UsersLinkRepository repository) {
         this.repository = repository;
     }
 

@@ -2,8 +2,8 @@ package edu.java.bot.commands;
 
 import com.pengrad.telegrambot.model.Update;
 import com.pengrad.telegrambot.request.SendMessage;
-import edu.java.bot.database.LinkRepository;
-import edu.java.bot.database.User;
+import edu.java.bot.database.UsersLinkRepository;
+import edu.java.bot.database.User.User;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -11,10 +11,10 @@ import org.springframework.stereotype.Component;
 public class StartCommand implements BotCommand {
 
     @Autowired
-    private final LinkRepository repository;
+    private final UsersLinkRepository repository;
     private User currentUser;
 
-    public StartCommand(LinkRepository repository) {
+    public StartCommand(UsersLinkRepository repository) {
         this.repository = repository;
     }
 

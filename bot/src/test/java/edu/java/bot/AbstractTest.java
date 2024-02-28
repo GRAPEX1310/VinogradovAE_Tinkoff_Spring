@@ -1,7 +1,7 @@
 package edu.java.bot;
 
 import com.pengrad.telegrambot.TelegramBot;
-import edu.java.bot.database.LinkRepository;
+import edu.java.bot.database.UsersLinkRepository;
 import edu.java.bot.services.MessageProcessor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -17,5 +17,5 @@ public abstract class AbstractTest {
     protected TelegramBot bot;
 
     @MockBean
-    protected LinkRepository repository;
+    protected UsersLinkRepository repository;
 }

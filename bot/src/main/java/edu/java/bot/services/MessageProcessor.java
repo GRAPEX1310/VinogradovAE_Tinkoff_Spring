@@ -4,10 +4,11 @@ import com.pengrad.telegrambot.TelegramBot;
 import com.pengrad.telegrambot.model.Update;
 import com.pengrad.telegrambot.request.SendMessage;
 import edu.java.bot.commands.BotCommand;
-import edu.java.bot.database.LinkRepository;
-import edu.java.bot.database.User;
-import edu.java.bot.database.UserState;
+import edu.java.bot.database.UsersLinkRepository;
+import edu.java.bot.database.User.User;
+import edu.java.bot.database.User.UserState;
 import java.util.List;
+import java.util.Map;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -28,8 +29,16 @@ public class MessageProcessor {
     private static final String WRONG_HANDLER_ERROR_LOG = "Wrong handler";
 
     @Autowired
-    private LinkRepository repository;
+    private UsersLinkRepository repository;
     private final List<BotCommand> commands;
+    private final Map<String, BotCommand> commandMap;
+
+    public void start() {
+        commandMap.clear();
+        for (BotCommand command : commands) {
+            commandMap.put(command.commandName(), command);
+        }
+    }
 
     public String checkUpdate(Update update, TelegramBot bot) {
         if (update.message() == null) {
@@ -38,45 +47,30 @@ public class MessageProcessor {
         }
 
         User currentUser = repository.getUser(update.message().chat().id());
-
-        for (BotCommand command : commands) {
-            if (currentUser != null || command.commandName().equals(update.message().text())) {
-                if (currentUser != null) {
-                    if (currentUser.getState() == UserState.WAITING_TRACKING_LINK
-                        && command.commandName().equals("/track")) {
-                        try {
-                            log.info(MESSAGE_FROM_COMMAND_LOG + command.commandName());
-                            bot.execute(command.handle(update));
-                        } catch (Exception e) {
-                            log.error(WRONG_HANDLER_ERROR_LOG);
-                        }
-                    } else if (currentUser.getState() == UserState.WAITING_UNTRACKING_LINK
-                        && command.commandName().equals("/untrack")) {
-                        try {
-                            log.info(MESSAGE_FROM_COMMAND_LOG + command.commandName());
-                            bot.execute(command.handle(update));
-                        } catch (Exception e) {
-                            log.error(WRONG_HANDLER_ERROR_LOG);
-                        }
-                    }
-                } else {
-                    try {
-                        log.info(MESSAGE_FROM_COMMAND_LOG + command.commandName());
-                        bot.execute(command.handle(update));
-                    } catch (Exception e) {
-                        log.error(WRONG_HANDLER_ERROR_LOG);
-                    }
-                }
-
-                return command.message();
+        BotCommand command = null;
+        if (commandMap.get(update.message().text()) != null) {
+            command = commandMap.get(update.message().text());
+        } else if (currentUser != null) {
+            if (currentUser.getState() == UserState.WAITING_TRACKING_LINK) {
+                command = commandMap.get("/track");
+            } else if (currentUser.getState() == UserState.WAITING_UNTRACKING_LINK) {
+                command = commandMap.get("/untrack");
             }
         }
-
-        try {
-            bot.execute(new SendMessage(update.message().chat().id(), NOT_REQUIRED_COMMAND_RESPONSE));
-            log.info(NOT_REQUIRED_COMMAND_PROBLEM_LOG);
-        } catch (Exception e) {
-            log.error(NOT_REQUIRED_COMMAND_ERROR_LOG, e);
+        if (command != null) {
+            try {
+                log.info(MESSAGE_FROM_COMMAND_LOG + command.commandName());
+                bot.execute(command.handle(update));
+            } catch (Exception e) {
+                log.error(WRONG_HANDLER_ERROR_LOG);
+            }
+        } else {
+            try {
+                bot.execute(new SendMessage(update.message().chat().id(), NOT_REQUIRED_COMMAND_RESPONSE));
+                log.info(NOT_REQUIRED_COMMAND_PROBLEM_LOG);
+            } catch (Exception e) {
+                log.error(NOT_REQUIRED_COMMAND_ERROR_LOG, e);
+            }
         }
 
         return NOT_REQUIRED_COMMAND_PROBLEM_LOG;

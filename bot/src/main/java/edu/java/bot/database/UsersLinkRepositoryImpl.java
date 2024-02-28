@@ -6,14 +6,15 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+import edu.java.bot.database.User.User;
 import org.springframework.stereotype.Repository;
 
 @Repository
-public class LinkRepositoryImpl implements LinkRepository {
+public class UsersLinkRepositoryImpl implements UsersLinkRepository {
 
     private Map<User, Set<String>> repository;
 
-    public LinkRepositoryImpl() {
+    public UsersLinkRepositoryImpl() {
         this.repository = new HashMap<>();
     }
 

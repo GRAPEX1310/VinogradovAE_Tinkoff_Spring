@@ -1,8 +1,9 @@
 package edu.java.bot.database;
 
+import edu.java.bot.database.User.User;
 import java.util.List;
 
-public interface LinkRepository {
+public interface UsersLinkRepository {
 
     boolean addLink(User user, String link);
 
