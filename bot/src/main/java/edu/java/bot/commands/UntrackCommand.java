@@ -2,9 +2,9 @@ package edu.java.bot.commands;
 
 import com.pengrad.telegrambot.model.Update;
 import com.pengrad.telegrambot.request.SendMessage;
-import edu.java.bot.database.UsersLinkRepository;
 import edu.java.bot.database.User.User;
 import edu.java.bot.database.User.UserState;
+import edu.java.bot.database.UsersLinkRepository;
 import edu.java.bot.utils.LinkValidator;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;

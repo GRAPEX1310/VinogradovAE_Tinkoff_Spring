@@ -20,13 +20,13 @@ public class MessageProcessorTest extends AbstractTest {
     @ParameterizedTest(name = "#{index} - Run with args: {0}")
     @MethodSource("argumentsProvider")
     @DisplayName("Message processor work test")
-    public void testMessageProcessor(String command, String response) {
+    public void testMessageProcessor(String commandName, String response) {
         Update update = mock(Update.class);
         Message message = mock(Message.class);
         Chat chat = mock(Chat.class);
 
         doReturn(13L).when(chat).id();
-        doReturn(command).when(message).text();
+        doReturn(commandName).when(message).text();
         doReturn(chat).when(message).chat();
         doReturn(message).when(update).message();
 

@@ -4,9 +4,9 @@ import com.pengrad.telegrambot.TelegramBot;
 import com.pengrad.telegrambot.model.Update;
 import com.pengrad.telegrambot.request.SendMessage;
 import edu.java.bot.commands.BotCommand;
-import edu.java.bot.database.UsersLinkRepository;
 import edu.java.bot.database.User.User;
 import edu.java.bot.database.User.UserState;
+import edu.java.bot.database.UsersLinkRepository;
 import java.util.List;
 import java.util.Map;
 import lombok.Getter;
@@ -64,6 +64,7 @@ public class MessageProcessor {
             } catch (Exception e) {
                 log.error(WRONG_HANDLER_ERROR_LOG);
             }
+            return command.message();
         } else {
             try {
                 bot.execute(new SendMessage(update.message().chat().id(), NOT_REQUIRED_COMMAND_RESPONSE));
@@ -71,8 +72,7 @@ public class MessageProcessor {
             } catch (Exception e) {
                 log.error(NOT_REQUIRED_COMMAND_ERROR_LOG, e);
             }
+            return NOT_REQUIRED_COMMAND_PROBLEM_LOG;
         }
-
-        return NOT_REQUIRED_COMMAND_PROBLEM_LOG;
     }
 }

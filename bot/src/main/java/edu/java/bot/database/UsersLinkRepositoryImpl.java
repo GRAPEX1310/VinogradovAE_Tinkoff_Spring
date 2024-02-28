@@ -1,12 +1,12 @@
 package edu.java.bot.database;
 
+import edu.java.bot.database.User.User;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
-import edu.java.bot.database.User.User;
 import org.springframework.stereotype.Repository;
 
 @Repository
