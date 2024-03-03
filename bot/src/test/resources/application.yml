@@ -13,7 +13,7 @@ springdoc:
 
 client:
   scrapper:
-    base-url: http://localhost:8080
+    base-url: http://localhost:8088
 
 server:
   port: 8090
