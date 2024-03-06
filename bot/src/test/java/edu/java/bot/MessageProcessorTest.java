@@ -38,6 +38,7 @@ public class MessageProcessorTest extends AbstractTest {
             Arguments.of("/list", "Здесь появятся ссылки на все отслеживаемые ресурсы"),
             Arguments.of("/track", "Для начала работы нужна регистрация через команду /start"),
             Arguments.of("/untrack", "Для начала работы нужна регистрация через команду /start"),
+            Arguments.of("/cancel", "Отправка ссылки отменена!"),
             Arguments.of("/start", """
                 Привет! Ты только что успешно зарегистрировался в боте
                 Данный бот создан для отслеживания ссылок с github и stackoverflow
