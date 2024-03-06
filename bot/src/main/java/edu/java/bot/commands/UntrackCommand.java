@@ -23,7 +23,6 @@ public class UntrackCommand implements BotCommand {
 
     @Autowired
     private final UsersLinkRepository repository;
-    private User currentUser;
 
     public UntrackCommand(UsersLinkRepository repository) {
         this.repository = repository;
@@ -41,9 +40,9 @@ public class UntrackCommand implements BotCommand {
 
     @Override
     public SendMessage handle(Update update) {
-        currentUser = repository.getUser(update.message().chat().id());
+        User currentUser = repository.getUser(update.message().chat().id());
         if (currentUser == null) {
-            return new SendMessage(update.message().chat().id(), message());
+            return new SendMessage(update.message().chat().id(), message(currentUser));
         }
 
         String response = "";
@@ -63,11 +62,11 @@ public class UntrackCommand implements BotCommand {
             return new SendMessage(update.message().chat().id(), response);
         }
         currentUser.setState(UserState.WAITING_UNTRACKING_LINK);
-        return new SendMessage(update.message().chat().id(), this.message());
+        return new SendMessage(update.message().chat().id(), this.message(currentUser));
     }
 
     @Override
-    public String message() {
+    public String message(User currentUser) {
         if (currentUser == null) {
             return USER_IS_NOT_REGISTERED_RESPONSE;
         } else if (currentUser.getState() == UserState.WAITING_UNTRACKING_LINK) {

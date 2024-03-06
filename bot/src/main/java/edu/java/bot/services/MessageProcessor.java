@@ -64,7 +64,7 @@ public class MessageProcessor {
             } catch (Exception e) {
                 log.error(WRONG_HANDLER_ERROR_LOG);
             }
-            return command.message();
+            return command.message(currentUser);
         } else {
             try {
                 bot.execute(new SendMessage(update.message().chat().id(), NOT_REQUIRED_COMMAND_RESPONSE));
