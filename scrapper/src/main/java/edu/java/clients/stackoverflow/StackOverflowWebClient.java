@@ -1,6 +1,5 @@
 package edu.java.clients.stackoverflow;
 
-import edu.java.clients.stackoverflow.StackOverflowClient;
 import edu.java.model.StackOverflowResponse;
 import java.util.Optional;
 import org.springframework.beans.factory.annotation.Autowired;

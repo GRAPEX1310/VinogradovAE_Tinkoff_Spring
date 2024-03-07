@@ -1,6 +1,6 @@
 package edu.java.bot.controller;
 
-import edu.java.bot.controllers.dto.LinkUpdateRequest;
+import edu.java.dto.request.LinkUpdateRequest;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
