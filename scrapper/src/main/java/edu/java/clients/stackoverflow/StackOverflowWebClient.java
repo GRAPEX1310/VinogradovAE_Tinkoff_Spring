@@ -1,5 +1,6 @@
 package edu.java.clients.stackoverflow;
 
+import edu.java.clients.stackoverflow.StackOverflowClient;
 import edu.java.model.StackOverflowResponse;
 import java.util.Optional;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -16,7 +17,7 @@ public class StackOverflowWebClient implements StackOverflowClient {
     @Autowired
     public StackOverflowWebClient(
         WebClient.Builder webClientBuilder,
-        @Value ("${client.stackoverflow.base-url:https://api.stackexchange.com/2.3}") String defaultURL
+        @Value("${client.stackoverflow.base-url:https://api.stackexchange.com/2.3}") String defaultURL
     ) {
         this.webClient = webClientBuilder.baseUrl(defaultURL).build();
     }
@@ -24,7 +25,11 @@ public class StackOverflowWebClient implements StackOverflowClient {
     @Override
     public Mono<Optional<StackOverflowResponse>> getQuestionData(int questionId) {
         return webClient.get()
-            .uri("/questions/{questionId}?site=stackoverflow", questionId)
+            .uri(uriBuilder -> uriBuilder
+                .path("/questions/{questionId}")
+                .queryParam("site", "stackoverflow")
+                .build(questionId)
+            )
             .retrieve()
             .bodyToMono(StackOverflowResponse.StackOverflowItemResponseList.class)
             .map(resp -> Optional.ofNullable(!resp.itemsList().isEmpty() ? resp.itemsList().getFirst() : null));
