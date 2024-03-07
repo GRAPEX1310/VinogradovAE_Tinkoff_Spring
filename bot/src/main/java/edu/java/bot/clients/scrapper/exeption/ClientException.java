@@ -1,6 +1,6 @@
 package edu.java.bot.clients.scrapper.exeption;
 
-import edu.java.bot.clients.scrapper.dto.ClientErrorResponse;
+import edu.java.dto.response.ClientErrorResponse;
 import lombok.Getter;
 
 @Getter

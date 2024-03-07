@@ -1,6 +1,12 @@
-package edu.java.controller.exception;
+package edu.java.controller;
 
-import edu.java.controller.dto.ApiErrorResponse;
+
+import edu.java.controller.exception.AddingLinkOneMoreTimeException;
+import edu.java.controller.exception.ChatIdNotFoundException;
+import edu.java.controller.exception.DoubleRegistrationException;
+import edu.java.controller.exception.LinkNotFoundException;
+import edu.java.controller.exception.WrongRequestParametersException;
+import edu.java.dto.response.ApiErrorResponse;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ExceptionHandler;

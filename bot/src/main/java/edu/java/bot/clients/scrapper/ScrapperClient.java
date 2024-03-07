@@ -1,7 +1,7 @@
 package edu.java.bot.clients.scrapper;
 
-import edu.java.bot.clients.scrapper.dto.LinkListResponse;
-import edu.java.bot.clients.scrapper.dto.LinkResponse;
+import edu.java.dto.response.LinkListResponse;
+import edu.java.dto.response.LinkResponse;
 import java.net.URI;
 import reactor.core.publisher.Mono;
 

@@ -1,4 +1,4 @@
-package edu.java.bot.clients.scrapper.dto;
+package edu.java.dto.response;
 
 import java.net.URI;
 

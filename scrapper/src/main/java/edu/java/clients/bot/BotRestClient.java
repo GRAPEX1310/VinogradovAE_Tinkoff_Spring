@@ -1,8 +1,8 @@
 package edu.java.clients.bot;
 
-import edu.java.clients.bot.dto.ClientErrorResponse;
-import edu.java.clients.bot.dto.LinkUpdateRequest;
 import edu.java.clients.exception.ClientException;
+import edu.java.dto.request.LinkUpdateRequest;
+import edu.java.dto.response.ClientErrorResponse;
 import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;

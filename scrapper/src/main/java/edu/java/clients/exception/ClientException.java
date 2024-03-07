@@ -1,7 +1,6 @@
 package edu.java.clients.exception;
 
-
-import edu.java.clients.bot.dto.ClientErrorResponse;
+import edu.java.dto.response.ClientErrorResponse;
 import lombok.Getter;
 
 @Getter

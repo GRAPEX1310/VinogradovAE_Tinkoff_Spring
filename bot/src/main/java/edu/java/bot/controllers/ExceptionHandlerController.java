@@ -1,6 +1,8 @@
-package edu.java.bot.controllers.exception;
+package edu.java.bot.controllers;
 
-import edu.java.bot.controllers.dto.ApiErrorResponse;
+import edu.java.bot.controllers.exception.ChatIdNotFoundException;
+import edu.java.bot.controllers.exception.WrongRequestParametersException;
+import edu.java.dto.response.ApiErrorResponse;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ExceptionHandler;
