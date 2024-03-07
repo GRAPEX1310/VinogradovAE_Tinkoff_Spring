@@ -1,4 +1,4 @@
-package edu.java.clients;
+package edu.java.clients.github;
 
 import edu.java.model.GitHubResponse;
 import reactor.core.publisher.Mono;

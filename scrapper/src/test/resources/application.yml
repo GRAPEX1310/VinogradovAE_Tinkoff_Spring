@@ -5,6 +5,8 @@ app:
     force-check-delay: 10s
 
 client:
+  bot:
+    base-url: http://localhost:8089
   github:
     base-url: http://localhost:8089
   stackoverflow:

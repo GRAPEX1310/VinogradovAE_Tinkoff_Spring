@@ -2,7 +2,7 @@ package edu.java.client;
 
 import com.github.tomakehurst.wiremock.WireMockServer;
 import com.github.tomakehurst.wiremock.client.WireMock;
-import edu.java.clients.StackOverflowWebClient;
+import edu.java.clients.stackoverflow.StackOverflowWebClient;
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.DisplayName;
