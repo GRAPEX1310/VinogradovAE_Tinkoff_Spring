@@ -1,6 +1,5 @@
 package edu.java.clients.github;
 
-import edu.java.clients.github.GitHubClient;
 import edu.java.model.GitHubResponse;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
