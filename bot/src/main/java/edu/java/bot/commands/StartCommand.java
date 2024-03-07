@@ -12,7 +12,6 @@ public class StartCommand implements BotCommand {
 
     @Autowired
     private final UsersLinkRepository repository;
-    private User currentUser;
 
     public StartCommand(UsersLinkRepository repository) {
         this.repository = repository;
@@ -35,14 +34,15 @@ public class StartCommand implements BotCommand {
         }
         boolean result = repository.addUser(update.message().chat().id());
         if (result) {
-            return new SendMessage(update.message().chat().id(), this.message());
+            User currentUser = repository.getUser(update.message().chat().id());
+            return new SendMessage(update.message().chat().id(), this.message(currentUser));
         } else {
             return new SendMessage(update.message().chat().id(), "Ошибка при регистрации");
         }
     }
 
     @Override
-    public String message() {
+    public String message(User currentUser) {
         return """
             Привет! Ты только что успешно зарегистрировался в боте
             Данный бот создан для отслеживания ссылок с github и stackoverflow

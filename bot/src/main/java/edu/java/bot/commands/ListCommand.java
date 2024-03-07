@@ -40,11 +40,11 @@ public class ListCommand implements BotCommand {
             return new SendMessage(update.message().chat().id(), USER_IS_NOT_REGISTERED_RESPONSE);
         }
         addLinksToList(repository.getTrackingLinks(currentUser));
-        return new SendMessage(update.message().chat().id(), this.message());
+        return new SendMessage(update.message().chat().id(), this.message(currentUser));
     }
 
     @Override
-    public String message() {
+    public String message(User currentUser) {
         if (links == null || links.isEmpty()) {
             return EMPTY_LINKS_LIST_RESPONSE;
         } else {

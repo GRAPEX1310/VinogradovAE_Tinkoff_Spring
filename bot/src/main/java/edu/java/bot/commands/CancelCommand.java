@@ -13,7 +13,6 @@ public class CancelCommand implements BotCommand {
 
     @Autowired
     private final UsersLinkRepository repository;
-    private User currentUser;
 
     public CancelCommand(UsersLinkRepository repository) {
         this.repository = repository;
@@ -31,16 +30,16 @@ public class CancelCommand implements BotCommand {
 
     @Override
     public SendMessage handle(Update update) {
-        currentUser = repository.getUser(update.message().chat().id());
+        User currentUser = repository.getUser(update.message().chat().id());
         if (currentUser == null || currentUser.getState() == UserState.BASE) {
             return new SendMessage(update.message().chat().id(), "Нет необходимости отмены");
         }
         currentUser.setState(UserState.BASE);
-        return new SendMessage(update.message().chat().id(), message());
+        return new SendMessage(update.message().chat().id(), message(currentUser));
     }
 
     @Override
-    public String message() {
+    public String message(User currentUser) {
         return "Отправка ссылки отменена!";
     }
 }
