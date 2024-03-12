@@ -30,8 +30,9 @@ public abstract class IntegrationEnvironment {
             .withDatabaseName("scrapper")
             .withUsername("postgres")
             .withPassword("postgres");
-        POSTGRES.start();
 
+        POSTGRES.start();
+        runMigrations(POSTGRES);
     }
 
     private static void runMigrations(JdbcDatabaseContainer<?> c) {

@@ -22,7 +22,6 @@ public class SimpleIntegrationTest extends IntegrationEnvironment{
         ) {
             ResultSet resultSet = statement.executeQuery("SELECT EXISTS (SELECT 1 FROM information_schema.tables WHERE table_schema = 'public' AND table_name = 'users')");
             resultSet.next();
-            //assertThat(resultSet.getBoolean(1)).isEqualTo("Table 'users' does not exist");
             assertTrue(resultSet.getBoolean(1), "Table 'users' does not exist");
 
             ResultSet resultSetAllLinks = statement.executeQuery("SELECT EXISTS (SELECT 1 FROM information_schema.tables WHERE table_schema = 'public' AND table_name = 'all_links')");
