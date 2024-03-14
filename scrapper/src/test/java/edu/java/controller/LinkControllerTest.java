@@ -28,9 +28,8 @@ public class LinkControllerTest {
                 .content(request)
                 .contentType(MediaType.APPLICATION_JSON))
             .andExpect(MockMvcResultMatchers.status().isOk())
-            .andExpect(jsonPath("$.id").value(13));
-            //Не работает, не знаю почему
-            //.andExpect(jsonPath("$.link").value("http://github.com"));
+            .andExpect(jsonPath("$.id").value(13))
+            .andExpect(jsonPath("$.url").value("http://github.com"));
     }
 
     @Test
@@ -42,9 +41,8 @@ public class LinkControllerTest {
                 .content(request)
                 .contentType(MediaType.APPLICATION_JSON))
             .andExpect(MockMvcResultMatchers.status().isOk())
-            .andExpect(jsonPath("$.id").value(13));
-            //Не работает, не знаю почему
-            //.andExpect(jsonPath("$.link").value("http://github.com"));
+            .andExpect(jsonPath("$.id").value(13))
+            .andExpect(jsonPath("$.url").value("http://github.com"));
     }
 
     @Test

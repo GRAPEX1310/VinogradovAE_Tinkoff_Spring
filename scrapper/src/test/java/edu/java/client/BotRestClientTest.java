@@ -19,7 +19,7 @@ import java.util.List;
 @TestPropertySource(locations = "classpath:test")
 public class BotRestClientTest {
 
-    private static final String ENDPOINT = "/links";
+    private static final String ENDPOINT = "/updates";
     private static final Long DEFAULT_ID = 13L;
     private static WireMockServer wireMockServer;
 
@@ -49,9 +49,9 @@ public class BotRestClientTest {
                 .withHeader("Content-Type", MediaType.APPLICATION_JSON_VALUE)));
 
         //Не работает, пишет "response 404 NOT FOUND". Почему - пока что не знаю
-//        StepVerifier.create(
-//            botClient.sendUpdates(DEFAULT_ID, url, "description", List.of())).verifyComplete();
-//
-//        WireMock.verify(WireMock.postRequestedFor(WireMock.urlEqualTo(ENDPOINT)));
+        StepVerifier.create(
+            botClient.sendUpdates(DEFAULT_ID, url, "description", List.of())).verifyComplete();
+
+        WireMock.verify(WireMock.postRequestedFor(WireMock.urlEqualTo(ENDPOINT)));
     }
 }
