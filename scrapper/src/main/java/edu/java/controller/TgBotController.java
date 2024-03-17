@@ -1,14 +1,15 @@
 package edu.java.controller;
 
-
 import edu.java.dto.response.ApiErrorResponse;
+import edu.java.model.User;
+import edu.java.service.UserService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -17,8 +18,14 @@ import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
-@RequestMapping("/tg-bot")
+@RequestMapping("/tg-chat")
 public class TgBotController {
+    private final UserService userService;
+
+    @Autowired
+    public TgBotController(UserService userService) {
+        this.userService = userService;
+    }
 
     @Operation(summary = "Зарегистрировать чат")
     @ApiResponses(value = {
@@ -33,8 +40,8 @@ public class TgBotController {
     })
     @PostMapping("/{id}")
     @ResponseStatus(HttpStatus.OK)
-    public ResponseEntity<Void> registerChat(@PathVariable Long id) {
-        return ResponseEntity.ok().build();
+    public void registerChat(@PathVariable Long id) {
+        userService.addUser(new User(id));
     }
 
     @Operation(summary = "Удалить чат")
@@ -54,7 +61,7 @@ public class TgBotController {
     })
     @DeleteMapping("/{id}")
     @ResponseStatus(HttpStatus.OK)
-    public ResponseEntity<Void> deleteChat(@PathVariable Long id) {
-        return ResponseEntity.ok().build();
+    public void deleteChat(@PathVariable Long id) {
+        userService.removeUser(id);
     }
 }

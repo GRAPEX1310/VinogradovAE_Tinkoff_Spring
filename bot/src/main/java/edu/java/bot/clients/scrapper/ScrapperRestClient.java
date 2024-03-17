@@ -61,7 +61,7 @@ public class ScrapperRestClient implements ScrapperClient {
         return webClient.post()
             .uri(LINKS_ENDPOINT)
             .header(CHAT_HEADER, chatId.toString())
-            .bodyValue(new SetLinkRequest(link.toString()))
+            .bodyValue(new SetLinkRequest(link))
             .retrieve()
             .onStatus(HttpStatusCode::is4xxClientError, clientResponse ->
                 clientResponse.bodyToMono(ClientErrorResponse.class)
@@ -75,7 +75,7 @@ public class ScrapperRestClient implements ScrapperClient {
         return webClient.method(HttpMethod.DELETE)
             .uri(LINKS_ENDPOINT)
             .header(CHAT_HEADER, chatId.toString())
-            .body(Mono.just(new DeleteLinkRequest(link.toString())), DeleteLinkRequest.class)
+            .body(Mono.just(new DeleteLinkRequest(link)), DeleteLinkRequest.class)
             .retrieve()
             .onStatus(HttpStatusCode::is4xxClientError, clientResponse ->
                 clientResponse.bodyToMono(ClientErrorResponse.class)

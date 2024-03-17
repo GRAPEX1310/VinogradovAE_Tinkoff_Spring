@@ -13,6 +13,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.test.context.TestPropertySource;
 import reactor.test.StepVerifier;
+import java.net.URI;
 import java.util.List;
 
 @SpringBootTest
@@ -50,7 +51,7 @@ public class BotRestClientTest {
 
         //Не работает, пишет "response 404 NOT FOUND". Почему - пока что не знаю
         StepVerifier.create(
-            botClient.sendUpdates(DEFAULT_ID, url, "description", List.of())).verifyComplete();
+            botClient.sendUpdates(DEFAULT_ID, URI.create(url), "description", List.of())).verifyComplete();
 
         WireMock.verify(WireMock.postRequestedFor(WireMock.urlEqualTo(ENDPOINT)));
     }

@@ -5,6 +5,8 @@ import edu.java.dto.request.SetLinkRequest;
 import edu.java.dto.response.ApiErrorResponse;
 import edu.java.dto.response.LinkListResponse;
 import edu.java.dto.response.LinkResponse;
+import edu.java.model.Link;
+import edu.java.service.LinkService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;
@@ -12,6 +14,7 @@ import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import java.net.URI;
 import java.util.List;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -26,6 +29,12 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 @RequestMapping("/links")
 public class LinkController {
+    private final LinkService linkService;
+
+    @Autowired
+    public LinkController(LinkService linkService) {
+        this.linkService = linkService;
+    }
 
     @Operation(summary = "Получить все отслеживаемые ссылки")
     @ApiResponses(value = {
@@ -41,9 +50,12 @@ public class LinkController {
     @GetMapping
     @ResponseStatus(HttpStatus.OK)
     public ResponseEntity<LinkListResponse> getLinksList(@RequestHeader(name = "Tg-Chat-Id") Long chatId) {
-        LinkListResponse linkListResponse =
-            new LinkListResponse(List.of(new LinkResponse(chatId, URI.create("http://github.com"))));
-        return ResponseEntity.ok(linkListResponse);
+        List<LinkResponse> links = linkService
+            .findAllLinksForUser(chatId)
+            .stream()
+            .map(link -> new LinkResponse(link.getId(), link.getUri()))
+            .toList();
+        return ResponseEntity.ok(new LinkListResponse(links));
     }
 
     @Operation(summary = "Добавить отслеживание ссылки")
@@ -63,8 +75,8 @@ public class LinkController {
         @RequestHeader(name = "Tg-Chat-Id") Long chatId,
         @RequestBody SetLinkRequest setLinkRequest
     ) {
-        LinkResponse linkResponse = new LinkResponse(chatId, URI.create(setLinkRequest.link()));
-        return ResponseEntity.ok(linkResponse);
+        Link link = linkService.addLink(chatId, URI.create(setLinkRequest.link().toString()));
+        return ResponseEntity.ok(new LinkResponse(link.getId(), link.getUri()));
     }
 
     @Operation(summary = "Убрать отслеживание ссылки")
@@ -88,7 +100,7 @@ public class LinkController {
         @RequestHeader(name = "Tg-Chat-Id") Long chatId,
         @RequestBody DeleteLinkRequest deleteLinkRequest
     ) {
-        LinkResponse linkResponse = new LinkResponse(chatId, URI.create(deleteLinkRequest.link()));
-        return ResponseEntity.ok(linkResponse);
+        Link link = linkService.removeLinkByURL(chatId, URI.create(deleteLinkRequest.link().toString()));
+        return ResponseEntity.ok(new LinkResponse(link.getId(), link.getUri()));
     }
 }

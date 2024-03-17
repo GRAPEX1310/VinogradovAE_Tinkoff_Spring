@@ -2,6 +2,7 @@ package edu.java.bot.controllers;
 
 import com.pengrad.telegrambot.TelegramBot;
 import com.pengrad.telegrambot.UpdatesListener;
+import com.pengrad.telegrambot.request.SendMessage;
 import edu.java.bot.services.MessageProcessor;
 import jakarta.annotation.PostConstruct;
 import lombok.Getter;
@@ -30,5 +31,9 @@ public class BotController {
 
             return UpdatesListener.CONFIRMED_UPDATES_ALL;
         });
+    }
+
+    public void sendUpdateMessage(Long chatId, String message) {
+        bot.execute(new SendMessage(chatId, message));
     }
 }
