@@ -19,7 +19,7 @@ import org.springframework.transaction.annotation.Transactional;
 @Repository
 public class JdbcUserRepository {
 
-    private static final String USER_ID = "user_id";
+    private static final String USER_ID = "id";
     private final JdbcTemplate jdbcTemplate;
 
     @Autowired
@@ -60,7 +60,7 @@ public class JdbcUserRepository {
 
     @Transactional(readOnly = true)
     public List<User> findAllUsers() {
-        String sql = "SELECT id FROM users";
+        String sql = "SELECT * FROM users";
         return jdbcTemplate.query(sql, new UserMapper());
     }
 

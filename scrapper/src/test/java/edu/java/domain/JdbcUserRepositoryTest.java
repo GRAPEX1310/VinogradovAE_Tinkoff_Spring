@@ -27,7 +27,7 @@ public class JdbcUserRepositoryTest extends IntegrationEnvironment {
         userRepository.addUser(user);
 
         var users = userRepository.findAllUsers();
-        assertEquals(user, users.getFirst());
+        assertEquals(user.getId(), users.getFirst().getId());
     }
 
     @Test

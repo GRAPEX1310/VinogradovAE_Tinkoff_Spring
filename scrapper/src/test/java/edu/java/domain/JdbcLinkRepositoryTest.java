@@ -43,7 +43,7 @@ public class JdbcLinkRepositoryTest extends IntegrationEnvironment {
         User user = new User(13L);
         userRepository.addUser(user);
 
-        Link link = new Link(null, URI.create("https://github.com/"));
+        Link link = new Link(null, URI.create("https://stackoverflow.com"));
         linkRepository.addLink(user.getId(), link);
         linkRepository.removeLinkByURL(user.getId(), link.getUri());
 

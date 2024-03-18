@@ -50,7 +50,6 @@ public class JdbcLinkRepository {
         }
 
         removeUserLink(userId, linkId);
-
         if (!isLinkTracked(linkId)) {
             removeLinkById(linkId);
         }
@@ -60,7 +59,7 @@ public class JdbcLinkRepository {
 
     @Transactional
     public List<Link> findAllLinks() {
-        String sql = "SELECT link_id, url FROM links";
+        String sql = "SELECT id, url FROM links";
         return jdbcTemplate.query(sql, new LinkMapper());
     }
 
@@ -132,7 +131,7 @@ public class JdbcLinkRepository {
     private boolean isLinkTracked(long linkId) {
         String sql = "SELECT COUNT(*) FROM user_links WHERE link_id = ?";
         Integer result = jdbcTemplate.queryForObject(sql, Integer.class, linkId);
-        return result == null || result == 0;
+        return !(result == null || result == 0);
     }
 
     private void removeLinkById(long linkId) {
