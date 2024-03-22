@@ -24,17 +24,19 @@ public class JdbcLinkRepository {
     private static final String STACKOVERFLOW = "stackoverflow";
 
     private final JdbcTemplate jdbcTemplate;
+    private final LinkMapper linkMapper;
 
     @Autowired
     public JdbcLinkRepository(JdbcTemplate jdbcTemplate) {
         this.jdbcTemplate = jdbcTemplate;
+        this.linkMapper = new LinkMapper();
     }
 
     @Transactional
     public void addLink(Long userId, Link link) {
         Long linkId = insertLink(link.getUri());
 
-        if (isLinkNotTrackByUser(userId, linkId)) {
+        if (!isLinkTrackByUser(userId, linkId)) {
             addUserTrackedLink(userId, linkId);
         } else {
             throw new AddingLinkOneMoreTimeException("User - " + userId + " already tracking link" + link.getUri());
@@ -57,10 +59,9 @@ public class JdbcLinkRepository {
         return new Link(linkId, uri);
     }
 
-    @Transactional
     public List<Link> findAllLinks() {
         String sql = "SELECT id, url FROM links";
-        return jdbcTemplate.query(sql, new LinkMapper());
+        return jdbcTemplate.query(sql, linkMapper);
     }
 
     @Transactional
@@ -68,14 +69,14 @@ public class JdbcLinkRepository {
         String sql =
             "SELECT links.id, url FROM links INNER JOIN user_links"
                 + " ON links.id = user_links.link_id WHERE user_id = ?";
-        return jdbcTemplate.query(sql, new LinkMapper(), userId);
+        return jdbcTemplate.query(sql, linkMapper, userId);
     }
 
     @Transactional
     public List<Link> findAllLinksWithCheckInterval(Long interval) {
         String sql = "SELECT id, url FROM links "
             + "WHERE last_update IS NULL OR EXTRACT(EPOCH FROM (CURRENT_TIMESTAMP - last_update)) > ?";
-        return jdbcTemplate.query(sql, new LinkMapper(), interval);
+        return jdbcTemplate.query(sql, linkMapper, interval);
     }
 
     @Transactional
@@ -112,10 +113,10 @@ public class JdbcLinkRepository {
         return linkId;
     }
 
-    private boolean isLinkNotTrackByUser(long userId, long linkId) {
+    private boolean isLinkTrackByUser(long userId, long linkId) {
         String sql = "SELECT COUNT(*) FROM user_links WHERE user_id = ? AND link_id = ?";
         Integer result = jdbcTemplate.queryForObject(sql, Integer.class, userId, linkId);
-        return result == null || result == 0;
+        return !(result == null || result == 0);
     }
 
     private void addUserTrackedLink(long userId, long linkId) {

@@ -21,10 +21,12 @@ public class JdbcUserRepository {
 
     private static final String USER_ID = "id";
     private final JdbcTemplate jdbcTemplate;
+    private final UserMapper userMapper;
 
     @Autowired
     public JdbcUserRepository(JdbcTemplate jdbcTemplate) {
         this.jdbcTemplate = jdbcTemplate;
+        this.userMapper = new UserMapper();
     }
 
     @Transactional
@@ -50,7 +52,7 @@ public class JdbcUserRepository {
         String sql = "SELECT user_id, user_state FROM users WHERE id = ?";
         Optional<User> user;
         try {
-            user = Optional.ofNullable(jdbcTemplate.queryForObject(sql, new UserMapper(), userId));
+            user = Optional.ofNullable(jdbcTemplate.queryForObject(sql, userMapper, userId));
         } catch (IncorrectResultSizeDataAccessException e) {
             user = Optional.empty();
         }
@@ -61,7 +63,7 @@ public class JdbcUserRepository {
     @Transactional(readOnly = true)
     public List<User> findAllUsers() {
         String sql = "SELECT * FROM users";
-        return jdbcTemplate.query(sql, new UserMapper());
+        return jdbcTemplate.query(sql, userMapper);
     }
 
     @Transactional(readOnly = true)
