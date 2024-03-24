@@ -1,8 +1,8 @@
-package edu.java.domain;
+package edu.java.domain.jdbc;
 
 import edu.java.controller.exception.DoubleRegistrationException;
 import edu.java.controller.exception.UserNotFoundException;
-import edu.java.model.Link;
+import edu.java.domain.UserRepository;
 import edu.java.model.User;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -17,7 +17,7 @@ import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
 @Repository
-public class JdbcUserRepository {
+public class JdbcUserRepository implements UserRepository {
 
     private static final String USER_ID = "id";
     private final JdbcTemplate jdbcTemplate;
@@ -30,16 +30,18 @@ public class JdbcUserRepository {
     }
 
     @Transactional
-    public void addUser(User user) {
+    @Override
+    public void addUser(Long userId) {
         String sql = "INSERT INTO users(id) VALUES (?)";
         try {
-            jdbcTemplate.update(sql, user.getId());
+            jdbcTemplate.update(sql, userId);
         } catch (DataAccessException e) {
-            throw new DoubleRegistrationException("User with ID %d already exists".formatted(user.getId()));
+            throw new DoubleRegistrationException("User with ID %d already exists".formatted(userId));
         }
     }
 
     @Transactional
+    @Override
     public void removeUser(Long userId) {
         String sql = "DELETE FROM users WHERE id = ?";
         int result = jdbcTemplate.update(sql, userId);
@@ -48,6 +50,7 @@ public class JdbcUserRepository {
         }
     }
 
+    @Override
     public Optional<User> findUser(Long userId) {
         String sql = "SELECT user_id, user_state FROM users WHERE id = ?";
         Optional<User> user;
@@ -67,9 +70,10 @@ public class JdbcUserRepository {
     }
 
     @Transactional(readOnly = true)
-    public List<Long> findUsersTrackLink(Link link) {
+    @Override
+    public List<Long> findUsersTrackLink(Long linkId) {
         String sql = "SELECT user_id FROM user_links WHERE link_id = ?";
-        return jdbcTemplate.query(sql, (rs, rowNum) -> rs.getLong(USER_ID), link.getId());
+        return jdbcTemplate.query(sql, (rs, rowNum) -> rs.getLong(USER_ID), linkId);
     }
 
     private static final class UserMapper implements RowMapper<User> {

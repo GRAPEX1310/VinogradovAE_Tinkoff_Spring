@@ -1,7 +1,8 @@
-package edu.java.domain;
+package edu.java.domain.jdbc;
 
 import edu.java.controller.exception.AddingLinkOneMoreTimeException;
 import edu.java.controller.exception.LinkNotFoundException;
+import edu.java.domain.LinkRepository;
 import edu.java.model.Link;
 import java.net.URI;
 import java.sql.ResultSet;
@@ -17,7 +18,7 @@ import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
 @Repository
-public class JdbcLinkRepository {
+public class JdbcLinkRepository implements LinkRepository {
 
     private static final String SELECT_LINK_ID_REQUEST = "SELECT id FROM links WHERE url = ?";
     private static final String GITHUB = "github";

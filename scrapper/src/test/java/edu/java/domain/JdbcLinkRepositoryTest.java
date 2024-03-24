@@ -1,5 +1,7 @@
 package edu.java.domain;
 
+import edu.java.domain.jdbc.JdbcLinkRepository;
+import edu.java.domain.jdbc.JdbcUserRepository;
 import edu.java.model.Link;
 import edu.java.model.User;
 import edu.java.scrapper.IntegrationEnvironment;
@@ -25,7 +27,7 @@ public class JdbcLinkRepositoryTest extends IntegrationEnvironment {
     @Rollback
     public void testAddingLink() {
         User user = new User(13L);
-        userRepository.addUser(user);
+        userRepository.addUser(user.getId());
 
         Link link = new Link(null, URI.create("https://github.com/"));
         linkRepository.addLink(user.getId(), link);
@@ -41,7 +43,7 @@ public class JdbcLinkRepositoryTest extends IntegrationEnvironment {
     @Rollback
     public void testDeletingLink() {
         User user = new User(13L);
-        userRepository.addUser(user);
+        userRepository.addUser(user.getId());
 
         Link link = new Link(null, URI.create("https://stackoverflow.com"));
         linkRepository.addLink(user.getId(), link);

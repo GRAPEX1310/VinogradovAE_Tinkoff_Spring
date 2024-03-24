@@ -2,8 +2,8 @@ package edu.java.service.jdbc;
 
 import edu.java.controller.exception.UserNotFoundException;
 import edu.java.controller.exception.WrongRequestParametersException;
-import edu.java.domain.JdbcLinkRepository;
-import edu.java.domain.JdbcUserRepository;
+import edu.java.domain.jdbc.JdbcLinkRepository;
+import edu.java.domain.jdbc.JdbcUserRepository;
 import edu.java.model.Link;
 import edu.java.model.User;
 import edu.java.service.LinkService;
@@ -12,27 +12,15 @@ import java.net.URI;
 import java.util.Collection;
 import java.util.List;
 import java.util.Optional;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
+import lombok.RequiredArgsConstructor;
 import org.springframework.transaction.annotation.Transactional;
 
-@Service
+@RequiredArgsConstructor
 public class JdbcLinkService implements LinkService {
 
     private final JdbcLinkRepository linkRepository;
     private final JdbcUserRepository userRepository;
     private final List<LinkUpdater> linkUpdaters;
-
-    @Autowired
-    public JdbcLinkService(
-        JdbcLinkRepository jdbcLinkRepository,
-        JdbcUserRepository jdbcUserRepository,
-        List<LinkUpdater> linkUpdaterList
-    ) {
-        linkRepository = jdbcLinkRepository;
-        userRepository = jdbcUserRepository;
-        linkUpdaters = linkUpdaterList;
-    }
 
     @Override
     @Transactional
