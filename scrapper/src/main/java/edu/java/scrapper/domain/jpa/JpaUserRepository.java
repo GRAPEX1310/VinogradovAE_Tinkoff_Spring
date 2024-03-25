@@ -1,5 +1,6 @@
 package edu.java.scrapper.domain.jpa;
 
+import edu.java.scrapper.controller.exception.DoubleRegistrationException;
 import edu.java.scrapper.domain.UserRepository;
 import edu.java.scrapper.domain.jpa.entities.UserEntity;
 import edu.java.scrapper.model.User;
@@ -25,8 +26,7 @@ public class JpaUserRepository implements UserRepository {
             session.persist(new UserEntity(userId));
             session.flush();
         } catch (Exception e) {
-            System.out.println(e.toString());
-            //throw new DoubleRegistrationException("This user has already exists!");
+            throw new DoubleRegistrationException("This user has already exists!");
         }
     }
 
