@@ -2,10 +2,13 @@ package edu.java.bot.commands;
 
 import com.pengrad.telegrambot.model.Update;
 import com.pengrad.telegrambot.request.SendMessage;
+import edu.java.bot.clients.scrapper.ScrapperClient;
+import edu.java.bot.clients.scrapper.exeption.ClientException;
+import edu.java.bot.database.InMemoryUserRepository;
 import edu.java.bot.database.User.User;
 import edu.java.bot.database.User.UserState;
-import edu.java.bot.database.UsersLinkRepository;
 import edu.java.bot.utils.LinkValidator;
+import java.net.URI;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -14,18 +17,17 @@ public class UntrackCommand implements BotCommand {
 
     private static final String RESOURCE_WAS_DELETED_RESPONSE = "Ресурс для отслеживания удален";
     private static final String INCORRECT_RESOURCE_RESPONSE = "Некорректная ссылка, попробуйте снова";
-    private static final String USER_IS_NOT_REGISTERED_RESPONSE =
-        "Для начала работы нужна регистрация через команду /start";
     private static final String WAITING_LINK_RESPONSE =
         "Жду ссылку на ресурс, который вы хотите прекратить отслеживать";
-    private static final String RESOURCE_HAS_ALREADY_BEEN_DELETED_RESPONSE =
-        "Данный ресурс уже удален или не был добавлен";
 
     @Autowired
-    private final UsersLinkRepository repository;
+    private final InMemoryUserRepository repository;
 
-    public UntrackCommand(UsersLinkRepository repository) {
+    ScrapperClient scrapperClient;
+
+    public UntrackCommand(InMemoryUserRepository repository, ScrapperClient scrapperClient) {
         this.repository = repository;
+        this.scrapperClient = scrapperClient;
     }
 
     @Override
@@ -41,19 +43,23 @@ public class UntrackCommand implements BotCommand {
     @Override
     public SendMessage handle(Update update) {
         User currentUser = repository.getUser(update.message().chat().id());
+        Long chatId = update.message().chat().id();
+        String link = update.message().text();
+
         if (currentUser == null) {
-            return new SendMessage(update.message().chat().id(), message(currentUser));
+            repository.addUser(chatId);
         }
 
+        currentUser = repository.getUser(chatId);
         String response = "";
         if (currentUser.getState() == UserState.WAITING_UNTRACKING_LINK) {
             if (LinkValidator.isLinkValid(update.message().text())) {
-                boolean result = repository.deleteLink(currentUser, update.message().text());
-                if (!result) {
-                    response = RESOURCE_HAS_ALREADY_BEEN_DELETED_RESPONSE;
-                } else {
-                    currentUser.setState(UserState.BASE);
+                try {
+                    scrapperClient.deleteLink(chatId, URI.create(link)).block();
                     response = RESOURCE_WAS_DELETED_RESPONSE;
+                    currentUser.setState(UserState.BASE);
+                } catch (ClientException e) {
+                    return new SendMessage(chatId, e.getErrorResponse().exceptionMessage());
                 }
             } else {
                 return new SendMessage(update.message().chat().id(), INCORRECT_RESOURCE_RESPONSE);
@@ -67,13 +73,7 @@ public class UntrackCommand implements BotCommand {
 
     @Override
     public String message(User currentUser) {
-        if (currentUser == null) {
-            return USER_IS_NOT_REGISTERED_RESPONSE;
-        } else if (currentUser.getState() == UserState.WAITING_UNTRACKING_LINK) {
-            return WAITING_LINK_RESPONSE;
-        } else {
-            return RESOURCE_WAS_DELETED_RESPONSE;
-        }
+        return WAITING_LINK_RESPONSE;
     }
 
     //http://github.com

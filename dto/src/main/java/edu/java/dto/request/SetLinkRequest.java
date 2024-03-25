@@ -1,4 +1,6 @@
 package edu.java.dto.request;
 
-public record SetLinkRequest(String link) {
+import java.net.URI;
+
+public record SetLinkRequest(URI link) {
 }

@@ -11,6 +11,7 @@ import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import java.net.URI;
 import java.util.List;
 
 @SpringBootTest
@@ -27,7 +28,7 @@ public class LinkControllerTest {
     @DisplayName("Test LinkUpdateController work")
     public void testLinkUpdateController() throws Exception {
         LinkUpdateRequest linkUpdateRequest =
-            new LinkUpdateRequest(1L, "http://github.com", "description", List.of(1L, 2L, 3L));
+            new LinkUpdateRequest(1L, URI.create("http://github.com"), "description", List.of(1L, 2L, 3L));
         String requestBody = objectMapper.writeValueAsString(linkUpdateRequest);
 
         mockMvc.perform(MockMvcRequestBuilders.post("/updates")

@@ -1,8 +1,10 @@
 app:
+  database-access-type: jpa
   scheduler:
     enable: true
-    interval: 5s
+    interval: 20s
     force-check-delay: 10s
+    check-interval: 100s
 
 client:
   bot:
@@ -17,8 +19,15 @@ springdoc:
     path: /swagger-ui
 
 spring:
+  liquibase:
+    enabled: false
   application:
     name: scrapper
+  datasource:
+    url: jdbc:postgresql://localhost:5432/scrapper
+    username: postgres
+    password: postgres
+    driverClassName: org.postgresql.Driver
 
 server:
   port: 8080
