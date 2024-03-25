@@ -1,8 +1,8 @@
 app:
-  database-access-type: jdbc
+  database-access-type: jpa
   scheduler:
     enable: true
-    interval: 5s
+    interval: 20s
     force-check-delay: 10s
     check-interval: 100s
 
