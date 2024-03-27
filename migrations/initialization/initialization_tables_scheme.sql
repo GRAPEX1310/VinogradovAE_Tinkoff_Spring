@@ -19,8 +19,7 @@ CREATE TABLE IF NOT EXISTS links
 (
     id BIGINT PRIMARY KEY GENERATED ALWAYS AS IDENTITY,
     link_type enum_link_type NOT NULL,
-    url VARCHAR(128) UNIQUE NOT NULL,
-    last_update TIMESTAMPTZ
+    url VARCHAR(128) UNIQUE NOT NULL
 );
 
 --changeset VinogradovAE:create_table_user_links
