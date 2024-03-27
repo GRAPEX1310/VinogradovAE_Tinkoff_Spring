@@ -3,6 +3,7 @@ app:
     enable: true
     interval: 5s
     force-check-delay: 10s
+    check-interval: 100s
 
 client:
   bot:
@@ -17,6 +18,8 @@ springdoc:
     path: /swagger-ui
 
 spring:
+  liquibase:
+    enabled: false
   application:
     name: scrapper
   datasource:

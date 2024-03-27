@@ -3,6 +3,7 @@ package edu.java.clients.bot;
 import edu.java.clients.exception.ClientException;
 import edu.java.dto.request.LinkUpdateRequest;
 import edu.java.dto.response.ClientErrorResponse;
+import java.net.URI;
 import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -26,10 +27,11 @@ public class BotRestClient implements BotClient {
     }
 
     @Override
-    public Mono<Void> sendUpdates(Long id, String url, String description, List<Long> tgChatIds) {
-        return webClient.post()
+    public Mono<Void> sendUpdates(Long id, URI uri, String description, List<Long> tgChatIds) {
+        return webClient
+            .post()
             .uri(ENDPOINT)
-            .bodyValue(new LinkUpdateRequest(id, url, description, tgChatIds))
+            .bodyValue(new LinkUpdateRequest(id, uri, description, tgChatIds))
             .retrieve()
             .onStatus(HttpStatusCode::is4xxClientError, clientResponse ->
                 clientResponse.bodyToMono(ClientErrorResponse.class)

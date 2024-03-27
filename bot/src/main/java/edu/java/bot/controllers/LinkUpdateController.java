@@ -7,15 +7,23 @@ import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
+@RequestMapping("/updates")
 public class LinkUpdateController {
+    private final BotController bot;
+
+    @Autowired
+    public LinkUpdateController(BotController botController) {
+        bot = botController;
+    }
 
     @Operation(summary = "Отправить обновление")
     @ApiResponses(value = {
@@ -29,8 +37,11 @@ public class LinkUpdateController {
                                              = ApiErrorResponse.class))})
     })
     @ResponseStatus(HttpStatus.OK)
-    @PostMapping("/updates")
-    public ResponseEntity<Void> updateProcess(@RequestBody LinkUpdateRequest linkUpdateRequest) {
-        return ResponseEntity.ok().build();
+    @PostMapping
+    public void updateProcess(@RequestBody LinkUpdateRequest linkUpdateRequest) {
+        String message = linkUpdateRequest.description() + "\n" + linkUpdateRequest.url();
+        for (Long chatId : linkUpdateRequest.tgChatIds()) {
+            bot.sendUpdateMessage(chatId, message);
+        }
     }
 }

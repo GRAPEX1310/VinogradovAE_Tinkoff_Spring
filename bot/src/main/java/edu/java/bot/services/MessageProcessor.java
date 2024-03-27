@@ -4,9 +4,9 @@ import com.pengrad.telegrambot.TelegramBot;
 import com.pengrad.telegrambot.model.Update;
 import com.pengrad.telegrambot.request.SendMessage;
 import edu.java.bot.commands.BotCommand;
+import edu.java.bot.database.InMemoryUserRepository;
 import edu.java.bot.database.User.User;
 import edu.java.bot.database.User.UserState;
-import edu.java.bot.database.UsersLinkRepository;
 import java.util.List;
 import java.util.Map;
 import lombok.Getter;
@@ -29,7 +29,7 @@ public class MessageProcessor {
     private static final String WRONG_HANDLER_ERROR_LOG = "Wrong handler";
 
     @Autowired
-    private UsersLinkRepository repository;
+    private InMemoryUserRepository repository;
     private final List<BotCommand> commands;
     private final Map<String, BotCommand> commandMap;
 
