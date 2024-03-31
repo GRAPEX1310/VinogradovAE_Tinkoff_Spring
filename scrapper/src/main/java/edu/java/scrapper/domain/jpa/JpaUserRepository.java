@@ -27,8 +27,8 @@ public class JpaUserRepository implements UserRepository {
             session.save(new UserEntity(userId));
             session.flush();
         } catch (Exception e) {
-            System.out.println(e.getMessage());
-            System.out.println(e.getCause());
+//            System.out.println(e.getMessage());
+//            System.out.println(e.getCause());
             throw new DoubleRegistrationException("This user has already exists!");
         }
     }
