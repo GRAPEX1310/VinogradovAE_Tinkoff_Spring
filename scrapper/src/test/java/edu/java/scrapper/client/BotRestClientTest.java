@@ -50,6 +50,7 @@ public class BotRestClientTest {
                 .withStatus(HttpStatus.OK.value())
                 .withHeader("Content-Type", MediaType.APPLICATION_JSON_VALUE)));
 
+
         StepVerifier.create(
             botClient.sendUpdates(DEFAULT_ID, URI.create(url), "description", List.of())).verifyComplete();
 
