@@ -1,33 +1,26 @@
-package edu.java.scrapper.service.jdbc;
+package edu.java.scrapper.service.jpa;
 
-import edu.java.scrapper.controller.exception.UserNotFoundException;
-import edu.java.scrapper.domain.jdbc.JdbcUserRepository;
+import edu.java.scrapper.domain.jpa.JpaUserRepository;
 import edu.java.scrapper.model.Link;
 import edu.java.scrapper.model.User;
 import edu.java.scrapper.service.UserService;
 import java.util.List;
-import java.util.Optional;
 import lombok.RequiredArgsConstructor;
 
 @RequiredArgsConstructor
-public class JdbcUserService implements UserService {
+public class JpaUserService implements UserService {
 
-    private final JdbcUserRepository userRepository;
+    private final JpaUserRepository userRepository;
 
-@Override
+    @Override
     public void addUser(User user) {
         userRepository.addUser(user.getId());
     }
 
     @Override
     public User findUser(Long id) {
-        Optional<User> user = userRepository.findUser(id);
-
-        if (user.isEmpty()) {
-            throw new UserNotFoundException(id);
-        }
-
-        return user.get();
+        var result = userRepository.findUser(id);
+        return result.orElse(null);
     }
 
     @Override

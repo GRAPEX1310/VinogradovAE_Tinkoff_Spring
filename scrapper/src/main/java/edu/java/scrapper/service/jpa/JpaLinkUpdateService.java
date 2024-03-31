@@ -1,6 +1,6 @@
-package edu.java.scrapper.service.jdbc;
+package edu.java.scrapper.service.jpa;
 
-import edu.java.scrapper.domain.jdbc.JdbcLinkRepository;
+import edu.java.scrapper.domain.jpa.JpaLinkRepository;
 import edu.java.scrapper.model.Link;
 import edu.java.scrapper.service.LinkUpdateService;
 import java.time.OffsetDateTime;
@@ -8,8 +8,9 @@ import java.util.Optional;
 import lombok.RequiredArgsConstructor;
 
 @RequiredArgsConstructor
-public class JdbcLinkUpdateService implements LinkUpdateService {
-    private final JdbcLinkRepository linkRepository;
+public class JpaLinkUpdateService implements LinkUpdateService {
+
+    private final JpaLinkRepository linkRepository;
 
     @Override
     public Optional<String> update(Link link, OffsetDateTime updateTime) {
