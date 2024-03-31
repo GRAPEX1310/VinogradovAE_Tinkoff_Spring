@@ -16,4 +16,6 @@ public interface LinkRepository {
     List<Link> findAllLinksWithCheckInterval(Long interval);
 
     boolean updateLink(Link link, OffsetDateTime updateTime);
+
+    List<Link> findAllLinks();
 }

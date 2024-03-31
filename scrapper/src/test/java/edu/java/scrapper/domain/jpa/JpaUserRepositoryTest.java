@@ -8,6 +8,8 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.annotation.Rollback;
+import org.springframework.test.context.DynamicPropertyRegistry;
+import org.springframework.test.context.DynamicPropertySource;
 import org.springframework.transaction.annotation.Transactional;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
@@ -16,6 +18,11 @@ public class JpaUserRepositoryTest {
 
     @Autowired
     private JpaUserRepository userRepository;
+
+    @DynamicPropertySource
+    public static void setJpaAccessType(DynamicPropertyRegistry registry) {
+        registry.add("app.database-access-type", () -> "jpa");
+    }
 
     @Test
     @DisplayName("Test adding user")
@@ -27,6 +34,7 @@ public class JpaUserRepositoryTest {
 
         var users = userRepository.findAllUsers();
         assertEquals(user.getId(), users.getFirst().getId());
+        userRepository.removeUser(26L);
     }
 
     @Test
@@ -34,9 +42,9 @@ public class JpaUserRepositoryTest {
     @Transactional
     @Rollback
     public void testDeletingUser() {
-        User user = new User(13L);
+        User user = new User(25L);
         userRepository.addUser(user.getId());
-        userRepository.removeUser(13L);
+        userRepository.removeUser(25L);
 
         var users = userRepository.findAllUsers();
         assertEquals(users.size(), 0);

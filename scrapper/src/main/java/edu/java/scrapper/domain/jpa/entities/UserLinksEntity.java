@@ -28,7 +28,7 @@ public @Entity class UserLinksEntity {
 
     @Id
     @ManyToOne
-    @JoinColumn(name = "user_id", referencedColumnName = "id")
+    @JoinColumn(name = "link_id", referencedColumnName = "id")
     private LinkEntity link;
 
 }

@@ -8,15 +8,16 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.List;
 import java.util.Optional;
+import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataAccessException;
 import org.springframework.dao.IncorrectResultSizeDataAccessException;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.RowMapper;
-import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
-@Repository
+@Transactional
+@RequiredArgsConstructor
 public class JdbcUserRepository implements UserRepository {
 
     private static final String USER_ID = "id";
@@ -29,7 +30,6 @@ public class JdbcUserRepository implements UserRepository {
         this.userMapper = new UserMapper();
     }
 
-    @Transactional
     @Override
     public void addUser(Long userId) {
         String sql = "INSERT INTO users(id) VALUES (?)";
@@ -40,7 +40,6 @@ public class JdbcUserRepository implements UserRepository {
         }
     }
 
-    @Transactional
     @Override
     public void removeUser(Long userId) {
         String sql = "DELETE FROM users WHERE id = ?";

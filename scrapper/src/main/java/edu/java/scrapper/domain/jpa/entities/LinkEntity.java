@@ -2,8 +2,6 @@ package edu.java.scrapper.domain.jpa.entities;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
-import jakarta.persistence.EnumType;
-import jakarta.persistence.Enumerated;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
@@ -32,9 +30,8 @@ public @Entity class LinkEntity {
     @Column(name = "id", nullable = false, unique = true)
     private Long id;
 
-    @Enumerated(EnumType.STRING)
     @Column(name = "link_type", nullable = false)
-    private LinkType linkType;
+    private String linkType;
 
     @Column(name = "url", unique = true, nullable = false)
     private String url;

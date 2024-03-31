@@ -2,25 +2,36 @@ package edu.java.scrapper.configuration.database;
 
 import edu.java.scrapper.domain.jpa.JpaLinkRepository;
 import edu.java.scrapper.domain.jpa.JpaUserRepository;
+import edu.java.scrapper.service.LinkService;
+import edu.java.scrapper.service.UserService;
+import edu.java.scrapper.service.jpa.JpaLinkService;
+import edu.java.scrapper.service.jpa.JpaUserService;
 import org.hibernate.SessionFactory;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.context.annotation.Primary;
 
 @Configuration
 @ConditionalOnProperty(prefix = "app", name = "database-access-type", havingValue = "jpa")
 public class JpaAccessConfig {
 
     @Bean
-    @Primary
     public JpaLinkRepository getJpaLinkRepository(SessionFactory sessionFactory) {
         return new JpaLinkRepository(sessionFactory);
     }
 
     @Bean
-    @Primary
-    public JpaUserRepository getJpaUserRepository(SessionFactory sessionFactory) {
-        return new JpaUserRepository(sessionFactory);
+    public JpaUserRepository getJpaUserRepository(JpaLinkRepository linkRepository, SessionFactory sessionFactory) {
+        return new JpaUserRepository(linkRepository, sessionFactory);
+    }
+
+    @Bean
+    public LinkService getLinkService(JpaLinkRepository jpaLinkRepository) {
+        return new JpaLinkService(jpaLinkRepository);
+    }
+
+    @Bean
+    public UserService getUserService(JpaUserRepository jpaUserRepository) {
+        return new JpaUserService(jpaUserRepository);
     }
 }

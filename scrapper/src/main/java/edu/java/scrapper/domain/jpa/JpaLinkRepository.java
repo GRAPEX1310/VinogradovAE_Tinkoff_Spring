@@ -1,11 +1,12 @@
 package edu.java.scrapper.domain.jpa;
 
+import edu.java.scrapper.controller.exception.LinkNotFoundException;
 import edu.java.scrapper.domain.LinkRepository;
 import edu.java.scrapper.domain.jpa.entities.LinkEntity;
-import edu.java.scrapper.domain.jpa.entities.LinkType;
 import edu.java.scrapper.domain.jpa.entities.UserEntity;
 import edu.java.scrapper.domain.jpa.entities.UserLinksEntity;
 import edu.java.scrapper.model.Link;
+import jakarta.persistence.NoResultException;
 import java.net.URI;
 import java.sql.Timestamp;
 import java.time.Instant;
@@ -16,10 +17,8 @@ import java.util.Objects;
 import lombok.RequiredArgsConstructor;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
-import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
-@Repository
 @Transactional
 @RequiredArgsConstructor
 public class JpaLinkRepository implements LinkRepository {
@@ -54,15 +53,20 @@ public class JpaLinkRepository implements LinkRepository {
     public Link removeLinkByURL(Long userId, URI uri) {
         try (Session session = sessionFactory.openSession()) {
             session.beginTransaction();
+            LinkEntity linkEntity;
 
-            LinkEntity linkEntity = session
-                .createQuery("FROM LinkEntity WHERE url =" + uri.toString(), LinkEntity.class)
-                .getSingleResult();
-
-            Long linkId = linkEntity.getId();
+            try {
+                linkEntity = session
+                    .createQuery("FROM LinkEntity WHERE url ='" + uri.toString() + "'", LinkEntity.class)
+                    .getSingleResult();
+                session.persist(linkEntity);
+            } catch (NoResultException e) {
+                throw new LinkNotFoundException("Can't delete link because it wasn't found");
+            }
 
             List<UserLinksEntity> usersTrackingLink = session
-                .createQuery("from UserLinksEntity where link=" + linkId, UserLinksEntity.class)
+                .createQuery("from UserLinksEntity where link.id=:linkParam", UserLinksEntity.class)
+                .setParameter("linkParam", linkEntity.getId())
                 .getResultList();
 
             boolean moreOneUserTracking = (usersTrackingLink.size() > 1);
@@ -74,10 +78,10 @@ public class JpaLinkRepository implements LinkRepository {
             }
 
             if (!moreOneUserTracking) {
-                session.remove(session.get(LinkEntity.class, linkId));
+                session.remove(session.get(LinkEntity.class, linkEntity.getId()));
             }
             session.flush();
-            return new Link(linkId, uri);
+            return new Link(linkEntity.getId(), uri);
         }
     }
 
@@ -87,8 +91,9 @@ public class JpaLinkRepository implements LinkRepository {
             session.beginTransaction();
 
             List<LinkEntity> usersLinks = session
-                .createQuery("from LinkEntity inner join UserLinksEntity "
-                    + "on LinkEntity.id = UserLinksEntity.link where user =" + userId, LinkEntity.class)
+                .createQuery("select link from UserLinksEntity as ule "
+                    + "where ule.user = :userId", LinkEntity.class)
+                .setParameter("userId", new UserEntity(userId))
                 .getResultList();
             session.flush();
             return usersLinks.stream()
@@ -104,8 +109,10 @@ public class JpaLinkRepository implements LinkRepository {
             List<LinkEntity> usersLinks = session
                 .createQuery("from LinkEntity "
                     + "where lastUpdate is null or lastUpdate < :threshold", LinkEntity.class)
-                .setParameter("threshold",
-                    new Timestamp(System.currentTimeMillis() - (interval * CONVERT_TO_MILLI)))
+                .setParameter(
+                    "threshold",
+                    new Timestamp(System.currentTimeMillis() - (interval * CONVERT_TO_MILLI))
+                )
                 .getResultList();
             session.flush();
             return usersLinks.stream()
@@ -134,13 +141,23 @@ public class JpaLinkRepository implements LinkRepository {
         }
     }
 
-    private static LinkType parseLinkType(URI uri) {
+    @Override
+    public List<Link> findAllLinks() {
+        try (Session session = sessionFactory.openSession()) {
+            List<LinkEntity> result = session
+                .createQuery("from LinkEntity", LinkEntity.class).getResultList();
+            return result.stream().map(linkEntity -> new Link(linkEntity.getId(), URI.create(linkEntity.getUrl())))
+                .toList();
+        }
+    }
+
+    private static String parseLinkType(URI uri) {
         String link = uri.toString();
 
         if (link.contains(GITHUB)) {
-            return LinkType.github;
+            return GITHUB;
         } else if (link.contains(STACKOVERFLOW)) {
-            return LinkType.stackoverflow;
+            return STACKOVERFLOW;
         } else {
             return null;
         }

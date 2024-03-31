@@ -50,7 +50,6 @@ public class BotRestClientTest {
                 .withStatus(HttpStatus.OK.value())
                 .withHeader("Content-Type", MediaType.APPLICATION_JSON_VALUE)));
 
-        //Не работает, пишет "response 404 NOT FOUND". Почему - пока что не знаю
         StepVerifier.create(
             botClient.sendUpdates(DEFAULT_ID, URI.create(url), "description", List.of())).verifyComplete();
 

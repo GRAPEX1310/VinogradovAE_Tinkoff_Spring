@@ -10,14 +10,15 @@ import java.sql.SQLException;
 import java.time.OffsetDateTime;
 import java.util.List;
 import java.util.Optional;
+import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.RowMapper;
-import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
-@Repository
+@Transactional
+@RequiredArgsConstructor
 public class JdbcLinkRepository implements LinkRepository {
 
     private static final String SELECT_LINK_ID_REQUEST = "SELECT id FROM links WHERE url = ?";
@@ -33,7 +34,7 @@ public class JdbcLinkRepository implements LinkRepository {
         this.linkMapper = new LinkMapper();
     }
 
-    @Transactional
+    @Override
     public void addLink(Long userId, Link link) {
         Long linkId = insertLink(link.getUri());
 
@@ -45,7 +46,7 @@ public class JdbcLinkRepository implements LinkRepository {
         link.setId(linkId);
     }
 
-    @Transactional
+    @Override
     public Link removeLinkByURL(Long userId, URI uri) {
         Long linkId = getLinkIdByURL(uri.toString());
         if (linkId == null) {
@@ -60,12 +61,13 @@ public class JdbcLinkRepository implements LinkRepository {
         return new Link(linkId, uri);
     }
 
+    @Override
     public List<Link> findAllLinks() {
         String sql = "SELECT id, url FROM links";
         return jdbcTemplate.query(sql, linkMapper);
     }
 
-    @Transactional
+    @Override
     public List<Link> findAllUserLinks(Long userId) {
         String sql =
             "SELECT links.id, url FROM links INNER JOIN user_links"
@@ -73,14 +75,14 @@ public class JdbcLinkRepository implements LinkRepository {
         return jdbcTemplate.query(sql, linkMapper, userId);
     }
 
-    @Transactional
+    @Override
     public List<Link> findAllLinksWithCheckInterval(Long interval) {
         String sql = "SELECT id, url FROM links "
             + "WHERE last_update IS NULL OR EXTRACT(EPOCH FROM (CURRENT_TIMESTAMP - last_update)) > ?";
         return jdbcTemplate.query(sql, linkMapper, interval);
     }
 
-    @Transactional
+    @Override
     public boolean updateLink(Link link, OffsetDateTime updateTime) {
         String getSql = "SELECT last_update FROM links WHERE id = ?";
         Optional<OffsetDateTime> lastUpdate = Optional.ofNullable(
@@ -104,8 +106,7 @@ public class JdbcLinkRepository implements LinkRepository {
         Long linkId;
 
         linkId = jdbcTemplate.queryForObject(
-            "INSERT INTO links(url, link_type) VALUES (?, ?::enum_link_type) "
-                + "ON CONFLICT (url) DO UPDATE SET link_type = EXCLUDED.link_type RETURNING id",
+            "INSERT INTO links(url, link_type) VALUES (?, ?) RETURNING id",
             Long.class,
             uri.toString(),
             linkType
