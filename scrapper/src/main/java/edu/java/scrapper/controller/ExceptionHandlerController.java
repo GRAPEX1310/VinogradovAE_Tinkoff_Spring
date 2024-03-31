@@ -1,15 +1,14 @@
 package edu.java.scrapper.controller;
 
 
+import edu.java.dto.response.ApiErrorResponse;
 import edu.java.scrapper.controller.exception.AddingLinkOneMoreTimeException;
 import edu.java.scrapper.controller.exception.ChatIdNotFoundException;
 import edu.java.scrapper.controller.exception.DoubleRegistrationException;
 import edu.java.scrapper.controller.exception.LinkNotFoundException;
 import edu.java.scrapper.controller.exception.UserNotFoundException;
 import edu.java.scrapper.controller.exception.WrongRequestParametersException;
-import edu.java.dto.response.ApiErrorResponse;
 import java.util.Arrays;
-
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ExceptionHandler;

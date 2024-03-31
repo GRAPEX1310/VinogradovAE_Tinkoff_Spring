@@ -8,6 +8,7 @@ import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.SpringApplication;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
@@ -49,7 +50,7 @@ public class BotRestClientTest {
                 .withStatus(HttpStatus.OK.value())
                 .withHeader("Content-Type", MediaType.APPLICATION_JSON_VALUE)));
 
-        //Не работает, пишет "response 404 NOT FOUND". Почему - пока что не знаю
+
         StepVerifier.create(
             botClient.sendUpdates(DEFAULT_ID, URI.create(url), "description", List.of())).verifyComplete();
 
