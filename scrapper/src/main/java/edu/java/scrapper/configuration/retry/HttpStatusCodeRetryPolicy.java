@@ -1,9 +1,9 @@
 package edu.java.scrapper.configuration.retry;
 
+import java.util.Set;
 import org.springframework.retry.RetryContext;
 import org.springframework.retry.policy.SimpleRetryPolicy;
 import org.springframework.web.client.HttpClientErrorException;
-import java.util.Set;
 
 public class HttpStatusCodeRetryPolicy extends SimpleRetryPolicy {
     private final Set<Integer> retryStatusCodes;
