@@ -1,7 +1,7 @@
 package edu.java.bot.configuration;
 
-import java.util.Set;
 import jakarta.validation.constraints.NotEmpty;
+import java.util.Set;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.validation.annotation.Validated;
 
