@@ -2,7 +2,7 @@ package edu.java.scrapper.controller;
 
 import edu.java.dto.response.ApiErrorResponse;
 import edu.java.scrapper.model.User;
-import edu.java.scrapper.service.UserService;
+import edu.java.scrapper.service.database.UserService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;

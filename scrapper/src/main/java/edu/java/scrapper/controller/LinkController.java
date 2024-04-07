@@ -6,7 +6,7 @@ import edu.java.dto.response.ApiErrorResponse;
 import edu.java.dto.response.LinkListResponse;
 import edu.java.dto.response.LinkResponse;
 import edu.java.scrapper.model.Link;
-import edu.java.scrapper.service.LinkService;
+import edu.java.scrapper.service.database.LinkService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;
