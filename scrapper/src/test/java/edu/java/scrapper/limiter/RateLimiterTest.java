@@ -1,7 +1,6 @@
 package edu.java.scrapper.limiter;
 
-import edu.java.dto.response.LinkListResponse;
-import edu.java.scrapper.service.LinkService;
+import edu.java.scrapper.service.database.LinkService;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
@@ -15,8 +14,6 @@ import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.request.MockHttpServletRequestBuilder;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
-import java.util.ArrayList;
-import java.util.Collection;
 import java.util.List;
 
 @SpringBootTest

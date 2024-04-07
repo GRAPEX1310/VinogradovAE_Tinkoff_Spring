@@ -1,5 +1,5 @@
 app:
-  database-access-type: jpa
+  database-access-type: jdbc
 
   scheduler:
     enable: true
@@ -21,6 +21,15 @@ app:
         initial-interval-millis: 1000
         multiplier: 2
         max-interval-millis: 100000
+
+  use-queue: true
+
+  kafka-config:
+    servers: 127.0.0.1:9092,127.0.0.1:9093,127.0.0.1:9094
+    topics:
+      name: scrapper.updates
+      partitions: 2
+      replicas: 2
 
 client:
   bot:

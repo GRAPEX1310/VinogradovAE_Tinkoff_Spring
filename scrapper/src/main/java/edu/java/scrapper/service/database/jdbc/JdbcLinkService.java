@@ -1,4 +1,4 @@
-package edu.java.scrapper.service.jdbc;
+package edu.java.scrapper.service.database.jdbc;
 
 import edu.java.scrapper.controller.exception.UserNotFoundException;
 import edu.java.scrapper.controller.exception.WrongRequestParametersException;
@@ -6,7 +6,7 @@ import edu.java.scrapper.domain.jdbc.JdbcLinkRepository;
 import edu.java.scrapper.domain.jdbc.JdbcUserRepository;
 import edu.java.scrapper.model.Link;
 import edu.java.scrapper.model.User;
-import edu.java.scrapper.service.LinkService;
+import edu.java.scrapper.service.database.LinkService;
 import edu.java.scrapper.service.updater.LinkUpdater;
 import java.net.URI;
 import java.util.Collection;

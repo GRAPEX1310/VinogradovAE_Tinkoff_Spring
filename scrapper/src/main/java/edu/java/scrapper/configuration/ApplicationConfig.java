@@ -15,9 +15,11 @@ public record ApplicationConfig(
     @Bean
     @NotNull
     Scheduler scheduler,
-    Retry retry
+    Retry retry,
+    Boolean useQueue,
+    KafkaConfig kafkaConfig
 
-    ) {
+) {
     public record Scheduler(
         boolean enable,
         @NotNull Duration interval,
@@ -58,6 +60,19 @@ public record ApplicationConfig(
                 Long maxIntervalMillis
             ) {
             }
+        }
+    }
+
+    public record KafkaConfig(
+        String servers,
+        UpdatesTopic topics
+    ) {
+        public record UpdatesTopic(
+            String name,
+            Integer partitions,
+            Integer replicas
+        ) {
+
         }
     }
 }

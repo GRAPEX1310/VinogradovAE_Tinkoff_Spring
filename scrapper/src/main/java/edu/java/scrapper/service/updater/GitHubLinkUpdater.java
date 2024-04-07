@@ -2,7 +2,7 @@ package edu.java.scrapper.service.updater;
 
 import edu.java.scrapper.clients.github.GitHubClient;
 import edu.java.scrapper.model.Link;
-import edu.java.scrapper.service.LinkUpdateService;
+import edu.java.scrapper.service.database.LinkUpdateService;
 import java.util.Objects;
 import java.util.Optional;
 import org.springframework.beans.factory.annotation.Autowired;

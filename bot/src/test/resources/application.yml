@@ -15,6 +15,13 @@ app:
         multiplier: 2
         max-interval-millis: 100000
 
+  kafka-config:
+    servers: 127.0.0.1:9092,127.0.0.1:9093,127.0.0.1:9094
+    topics:
+      name: scrapper.updates
+      partitions: 2
+      replicas: 2
+
 spring:
   application:
     name: bot

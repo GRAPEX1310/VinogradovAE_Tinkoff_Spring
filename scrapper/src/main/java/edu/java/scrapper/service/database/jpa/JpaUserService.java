@@ -1,9 +1,9 @@
-package edu.java.scrapper.service.jpa;
+package edu.java.scrapper.service.database.jpa;
 
 import edu.java.scrapper.domain.jpa.JpaUserRepository;
 import edu.java.scrapper.model.Link;
 import edu.java.scrapper.model.User;
-import edu.java.scrapper.service.UserService;
+import edu.java.scrapper.service.database.UserService;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
 

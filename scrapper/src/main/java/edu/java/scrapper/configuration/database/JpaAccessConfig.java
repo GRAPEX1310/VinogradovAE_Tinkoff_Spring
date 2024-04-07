@@ -2,10 +2,10 @@ package edu.java.scrapper.configuration.database;
 
 import edu.java.scrapper.domain.jpa.JpaLinkRepository;
 import edu.java.scrapper.domain.jpa.JpaUserRepository;
-import edu.java.scrapper.service.LinkService;
-import edu.java.scrapper.service.UserService;
-import edu.java.scrapper.service.jpa.JpaLinkService;
-import edu.java.scrapper.service.jpa.JpaUserService;
+import edu.java.scrapper.service.database.LinkService;
+import edu.java.scrapper.service.database.UserService;
+import edu.java.scrapper.service.database.jpa.JpaLinkService;
+import edu.java.scrapper.service.database.jpa.JpaUserService;
 import org.hibernate.SessionFactory;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.context.annotation.Bean;

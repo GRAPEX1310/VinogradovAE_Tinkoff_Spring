@@ -10,6 +10,7 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.test.annotation.DirtiesContext;
 import org.springframework.test.context.TestPropertySource;
 import reactor.test.StepVerifier;
 import java.time.OffsetDateTime;
@@ -17,6 +18,7 @@ import java.time.format.DateTimeFormatter;
 
 @SpringBootTest
 @TestPropertySource(locations = "classpath:test")
+@DirtiesContext
 public class GitHubClientTest {
 
     private static WireMockServer wireMockServer;

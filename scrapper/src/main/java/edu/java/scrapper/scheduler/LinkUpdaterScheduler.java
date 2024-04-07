@@ -1,9 +1,9 @@
 package edu.java.scrapper.scheduler;
 
-import edu.java.scrapper.clients.bot.BotClient;
 import edu.java.scrapper.model.Link;
-import edu.java.scrapper.service.LinkService;
-import edu.java.scrapper.service.UserService;
+import edu.java.scrapper.service.database.LinkService;
+import edu.java.scrapper.service.database.UserService;
+import edu.java.scrapper.service.sender.UpdateSenderService;
 import edu.java.scrapper.service.updater.LinkUpdater;
 import java.time.Duration;
 import java.util.Collection;
@@ -21,7 +21,7 @@ public class LinkUpdaterScheduler {
     static int count = 1;
     private final LinkService linkService;
     private final UserService userService;
-    private final BotClient botClient;
+    private final UpdateSenderService updateSenderService;
     private final List<LinkUpdater> linkUpdaters;
     private final Duration checkInterval;
 
@@ -29,13 +29,13 @@ public class LinkUpdaterScheduler {
     public LinkUpdaterScheduler(
         LinkService linkService,
         UserService userService,
-        BotClient botClient,
+        UpdateSenderService updateSenderService,
         List<LinkUpdater> linkUpdaters,
         @Value("#{@scheduler.checkInterval()}") Duration checkInterval
     ) {
         this.linkService = linkService;
         this.userService = userService;
-        this.botClient = botClient;
+        this.updateSenderService = updateSenderService;
         this.linkUpdaters = linkUpdaters;
         this.checkInterval = checkInterval;
     }
@@ -62,6 +62,6 @@ public class LinkUpdaterScheduler {
 
     private void sendUpdate(Link link, String message) {
         List<Long> usersIds = userService.getUsersTrackLink(link);
-        botClient.sendUpdates(link.getId(), link.getUri(), message, usersIds).block();
+        updateSenderService.sendUpdate(link.getId(), link.getUri(), message, usersIds);
     }
 }

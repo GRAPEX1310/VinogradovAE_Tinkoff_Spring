@@ -1,8 +1,8 @@
-package edu.java.scrapper.service.jdbc;
+package edu.java.scrapper.service.database.jdbc;
 
 import edu.java.scrapper.domain.jdbc.JdbcLinkRepository;
 import edu.java.scrapper.model.Link;
-import edu.java.scrapper.service.LinkUpdateService;
+import edu.java.scrapper.service.database.LinkUpdateService;
 import java.time.OffsetDateTime;
 import java.util.Optional;
 import lombok.RequiredArgsConstructor;

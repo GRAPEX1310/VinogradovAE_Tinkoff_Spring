@@ -10,7 +10,8 @@ import org.springframework.validation.annotation.Validated;
 public record ApplicationConfig(
     @NotEmpty
     String telegramToken,
-    Retry retry
+    Retry retry,
+    KafkaConfig kafkaConfig
 ) {
     public record Retry(
         Integer maxAttempts,
@@ -44,6 +45,19 @@ public record ApplicationConfig(
                 Long maxIntervalMillis
             ) {
             }
+        }
+    }
+
+    public record KafkaConfig(
+        String servers,
+        UpdatesTopic topics
+    ) {
+        public record UpdatesTopic(
+            String name,
+            Integer partitions,
+            Integer replicas
+        ) {
+
         }
     }
 }

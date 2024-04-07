@@ -1,10 +1,10 @@
-package edu.java.scrapper.service.jdbc;
+package edu.java.scrapper.service.database.jdbc;
 
 import edu.java.scrapper.controller.exception.UserNotFoundException;
 import edu.java.scrapper.domain.jdbc.JdbcUserRepository;
 import edu.java.scrapper.model.Link;
 import edu.java.scrapper.model.User;
-import edu.java.scrapper.service.UserService;
+import edu.java.scrapper.service.database.UserService;
 import java.util.List;
 import java.util.Optional;
 import lombok.RequiredArgsConstructor;
