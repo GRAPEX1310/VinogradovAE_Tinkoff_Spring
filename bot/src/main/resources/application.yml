@@ -23,6 +23,11 @@ app:
       partitions: 2
       replicas: 2
 
+  micrometer-config:
+    processed-messages-counter:
+      name: messages.processed
+      description: Количество обработанных сообщений
+
 spring:
   application:
     name: bot
@@ -48,6 +53,30 @@ bucket4j:
               time: 1
               unit: minutes
               refill-speed: interval
+
+management:
+  server:
+    port: 8091
+  endpoint:
+    info:
+      enabled: true
+    prometheus:
+      enabled: true
+    health:
+      enabled: true
+  endpoints:
+    web:
+      base-path: /
+      exposure:
+        include:
+          - info
+          - prometheus
+          - health
+      path-mapping:
+        prometheus: /metrics
+  metrics:
+    tags:
+      application: ${spring.application.name}
 
 springdoc:
   swagger-ui:

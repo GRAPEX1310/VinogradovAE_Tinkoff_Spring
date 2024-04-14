@@ -11,7 +11,8 @@ public record ApplicationConfig(
     @NotEmpty
     String telegramToken,
     Retry retry,
-    KafkaConfig kafkaConfig
+    KafkaConfig kafkaConfig,
+    MicrometerConfig micrometerConfig
 ) {
     public record Retry(
         Integer maxAttempts,
@@ -57,6 +58,12 @@ public record ApplicationConfig(
             Integer partitions,
             Integer replicas
         ) {
+
+        }
+    }
+
+    public record MicrometerConfig(ProcessedMessagesCounter processedMessagesCounter) {
+        public record ProcessedMessagesCounter(String name, String description) {
 
         }
     }
