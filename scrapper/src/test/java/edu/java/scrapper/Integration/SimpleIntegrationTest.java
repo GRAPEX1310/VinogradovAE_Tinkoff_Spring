@@ -1,5 +1,6 @@
 package edu.java.scrapper.Integration;
 
+import edu.java.scrapper.Integration.IntegrationEnvironment;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.testcontainers.junit.jupiter.Testcontainers;

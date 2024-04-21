@@ -1,21 +1,15 @@
-package edu.java.scrapper.service.jdbc;
+package edu.java.scrapper.service.database.jdbc;
 
-import edu.java.scrapper.domain.JdbcLinkRepository;
+import edu.java.scrapper.domain.jdbc.JdbcLinkRepository;
 import edu.java.scrapper.model.Link;
-import edu.java.scrapper.service.LinkUpdateService;
+import edu.java.scrapper.service.database.LinkUpdateService;
 import java.time.OffsetDateTime;
 import java.util.Optional;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
+import lombok.RequiredArgsConstructor;
 
-@Service
+@RequiredArgsConstructor
 public class JdbcLinkUpdateService implements LinkUpdateService {
     private final JdbcLinkRepository linkRepository;
-
-    @Autowired
-    public JdbcLinkUpdateService(JdbcLinkRepository jdbcLinkRepository) {
-        linkRepository = jdbcLinkRepository;
-    }
 
     @Override
     public Optional<String> update(Link link, OffsetDateTime updateTime) {

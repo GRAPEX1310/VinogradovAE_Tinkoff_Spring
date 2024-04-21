@@ -1,4 +1,4 @@
-package edu.java.scrapper.service;
+package edu.java.scrapper.service.database;
 
 import edu.java.scrapper.model.Link;
 import edu.java.scrapper.model.User;

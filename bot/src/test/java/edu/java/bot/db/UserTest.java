@@ -1,4 +1,4 @@
-package edu.java.bot;
+package edu.java.bot.db;
 
 import edu.java.bot.database.User.User;
 import edu.java.bot.database.User.UserState;

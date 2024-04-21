@@ -8,13 +8,16 @@ import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.SpringApplication;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.test.annotation.DirtiesContext;
 import org.springframework.test.context.TestPropertySource;
 import reactor.test.StepVerifier;
 import java.time.OffsetDateTime;
 
 @SpringBootTest
 @TestPropertySource(locations = "classpath:test")
+@DirtiesContext
 public class StackOverflowWebClientTest {
 
     private static WireMockServer wireMockServer;

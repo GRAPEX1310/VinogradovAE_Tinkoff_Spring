@@ -2,7 +2,7 @@ package edu.java.scrapper.service.updater;
 
 import edu.java.scrapper.clients.stackoverflow.StackOverflowClient;
 import edu.java.scrapper.model.Link;
-import edu.java.scrapper.service.LinkUpdateService;
+import edu.java.scrapper.service.database.LinkUpdateService;
 import java.util.Arrays;
 import java.util.Objects;
 import java.util.Optional;
